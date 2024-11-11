@@ -19,12 +19,12 @@ class VCSClient:
             VCSNames.GITLAB.__str__(): GitlabClient
         }
 
-    def _create_client(self, client_type_str: str, vcs_connection_object: VCSConnectionObject) -> VCSClientProtocol:
+    def _create_client(self, vcs_connection_object: VCSConnectionObject) -> VCSClientProtocol:
         """ _create_client: private method that creates the client type specified """
-        if client_type_str in self.supported_clients.keys():
-            return self.supported_clients[client_type_str](vcs_connection_object=vcs_connection_object)
-        raise VCSClientNotSupportedException(client_type_str=client_type_str)
+        if vcs_connection_object.type in self.supported_clients.keys():
+            return self.supported_clients[vcs_connection_object.type](vcs_connection_object=vcs_connection_object)
+        raise VCSClientNotSupportedException(client_type_str=vcs_connection_object.type)
 
-    def get_client(self, client_type: str, vcs_connection_object: VCSConnectionObject) -> VCSClientProtocol:
+    def get_client(self, vcs_connection_object: VCSConnectionObject) -> VCSClientProtocol:
         """ get_client: returns a instance of VCSClientProtocol """
-        return self._create_client(client_type, vcs_connection_object=vcs_connection_object)
+        return self._create_client(vcs_connection_object=vcs_connection_object)
